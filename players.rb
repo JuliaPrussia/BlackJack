@@ -2,7 +2,7 @@ class Players
   attr_reader :name,
               :money,
               :player_cards,
-              :point
+              :score
 
   NAME_TEMPLATE = /^[A-zА-я]{3,16}$/
 
@@ -10,12 +10,27 @@ class Players
     @name = name
     @money = 100
     @player_cards = []
-    @points = 0
+    @score = 0
     validate!
   end
 
   def add_card(card)
     @player_cards.push(card)
+  end
+
+  def scoring
+    @player_cards.each do |card|
+      if card.score != 'A'
+        @score += card.score
+      end
+    end
+
+    @player_cards.each do |card|
+      if card.score == 'A'
+        @score +=1 if @score + 11 > 21
+        @score +=11 if @score + 11 <= 21
+      end
+    end
   end
 
   protected

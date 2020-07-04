@@ -8,7 +8,14 @@ class CardDeck
   def initialize
     @deck = []
     init_deck
+    @deck.shuffle!
   end
+
+  def take_card
+    @deck.pop
+  end
+
+  private
 
   def init_deck
     VALUES.each do |value|
@@ -16,7 +23,4 @@ class CardDeck
     end
   end
 
-  def take_card
-    @deck.sample
-  end
 end

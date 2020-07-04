@@ -1,12 +1,13 @@
 class Interface
   def initialize
     @player
-    @dealer = Players.new("Dealer")
-    @deck = CardDeck.new
+    @dealer
+    @deck
   end
 
   def start
     player_init
+    start_game
 
     # rescue StandardError => e
     #   puts "#{e.message}"
@@ -18,12 +19,29 @@ class Interface
     puts "Введите желаемое имя:"
     name = gets.chomp
     @player = Players.new(name)
+    @dealer = Players.new("Dealer")
+
+    @player.scoring
+    puts "Счет #{@player.score}"
+  end
+
+  def start_game
+    @deck = CardDeck.new
+
     @player.add_card(@deck.take_card)
     @player.add_card(@deck.take_card)
     @dealer.add_card(@deck.take_card)
     @dealer.add_card(@deck.take_card)
 
-    puts "#{@player.player_cards}"
-    puts "#{@dealer.player_cards}"
+    show_cards
+
+    @player.scoring
+    puts "Ваш счет: #{@player.score}"
   end
+
+  def show_cards
+    puts"Ваши карты:"
+    @player.player_cards.each { |card| puts"#{card.value}#{card.suit}" }
+  end
+
 end
