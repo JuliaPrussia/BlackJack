@@ -33,6 +33,11 @@ class Players
     end
   end
 
+  def bet
+    @money -= 10
+    return 10
+  end
+
   protected
 
   def validate!
