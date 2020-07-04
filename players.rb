@@ -9,9 +9,13 @@ class Players
   def initialize(name)
     @name = name
     @money = 100
-    @player_cards = {}
+    @player_cards = []
     @points = 0
     validate!
+  end
+
+  def add_card(card)
+    @player_cards.push(card)
   end
 
   protected
