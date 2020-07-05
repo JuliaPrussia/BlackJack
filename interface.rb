@@ -3,7 +3,7 @@ class Interface
     @player
     @dealer
     @deck
-    @bank
+    @bank = 0
   end
 
   def start
@@ -43,6 +43,9 @@ class Interface
     @player.add_card(@deck.take_card)
     @dealer.add_card(@deck.take_card)
     @dealer.add_card(@deck.take_card)
+
+    puts "Принимаем ставки в банк"
+    @bank += @player.bet + @dealer.bet
 
     puts "Ваши карты:"
     show_cards(@player)
@@ -89,8 +92,15 @@ class Interface
     result = result(@player, @dealer)
     if result == "Ничья"
       puts "Ничья"
+      @player.take_win(@bank/2)
+      @dealer.take_win(@bank/2)
+      @bank = 0
+      puts "Ваш баланс #{@player.money}"
     else
-      puts "Победитель: #{result}"
+      puts "Победитель: #{result.name}"
+      result.take_win(@bank)
+      @bank = 0
+      puts "Ваш баланс #{@player.money}"
     end
   end
 
@@ -125,8 +135,8 @@ class Interface
   end
 
   def result(player1, player2)
-    return player1.name if player2.score > 21 && player1.score <= 21 || player1.score > player2.score && player1.score <= 21
-    return player2.name if player1.score > 21 && player2.score <= 21 || player1.score > player2.score && player1.score <= 21
+    return player1 if player2.score > 21 && player1.score <= 21 || player1.score > player2.score && player1.score <= 21
+    return player2 if player1.score > 21 && player2.score <= 21 || player2.score > player1.score && player2.score <= 21
     return "Ничья" if player1.score == player2.score || player1.score > 21 && player2.score > 21
   end
 

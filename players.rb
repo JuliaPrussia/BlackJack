@@ -43,6 +43,10 @@ class Players
     return 10
   end
 
+  def take_win(money)
+    @money += money
+  end
+
   protected
 
   def validate!
