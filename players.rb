@@ -18,6 +18,11 @@ class Players
     @player_cards.push(card)
   end
 
+  def reset_game_info
+    @player_cards = []
+    @score = 0
+  end
+
   def scoring
     @player_cards.each do |card|
       if card.score != 'A'

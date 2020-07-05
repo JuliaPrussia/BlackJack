@@ -3,11 +3,12 @@ class Interface
     @player
     @dealer
     @deck
+    @bank
   end
 
   def start
     player_init
-    start_game
+    game
 
     # rescue StandardError => e
     #   puts "#{e.message}"
@@ -22,8 +23,21 @@ class Interface
     @dealer = Players.new("Dealer")
   end
 
+  def game
+    loop do
+      start_game
+      game_logic
+      puts "Продолжаем играть?enter-продолжить, q - выход"
+      continue = gets.chomp
+      break if continue == "q"
+    end
+  end
+
   def start_game
     @deck = CardDeck.new
+
+    @player.reset_game_info
+    @dealer.reset_game_info
 
     @player.add_card(@deck.take_card)
     @player.add_card(@deck.take_card)
@@ -38,8 +52,11 @@ class Interface
     scoring(@player)
     scoring(@dealer)
     puts "Ваш счет: #{@player.score}"
+  end
 
-    loop do
+  def game_logic
+
+    until @player.player_cards.length == 3 && @dealer.player_cards.length == 3  do
       game_menu
 
       select = gets.chomp.to_i
@@ -60,14 +77,20 @@ class Interface
           puts"Взять новую карту возможно если у вас на руках только 2 карты!"
         end
       when 3
-        puts "Ваши карты:"
-        show_cards(@player)
-        puts "Ваш счет: #{@player.score}"
-        puts "Карты дилера"
-        show_cards(@dealer)
-        puts "Cчет дилера: #{@dealer.score}"
         break
       end
+    end
+    puts "Ваши карты:"
+    show_cards(@player)
+    puts "Карты дилера"
+    show_cards(@dealer)
+    puts "Ваш счет: #{@player.score}"
+    puts "Cчет дилера: #{@dealer.score}"
+    result = result(@player, @dealer)
+    if result == "Ничья"
+      puts "Ничья"
+    else
+      puts "Победитель: #{result}"
     end
   end
 
@@ -99,6 +122,12 @@ class Interface
     elsif player.score >= 17
       puts "Дилер пасует"
     end
+  end
+
+  def result(player1, player2)
+    return player1.name if player2.score > 21 && player1.score <= 21 || player1.score > player2.score && player1.score <= 21
+    return player2.name if player1.score > 21 && player2.score <= 21 || player1.score > player2.score && player1.score <= 21
+    return "Ничья" if player1.score == player2.score || player1.score > 21 && player2.score > 21
   end
 
 end
