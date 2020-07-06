@@ -34,7 +34,7 @@ class Interface
   end
 
   def start_game
-    @deck = CardDeck.new
+    @deck = Deck.new
 
     @player.reset_game_info
     @dealer.reset_game_info
