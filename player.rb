@@ -7,18 +7,9 @@ class Player
 
   def initialize(name)
     @name = name
-    @money = 100
     @hand = Hand.new
+    @bank = Bank.new
     validate!
-  end
-
-  def make_bet
-    @money -= 10
-    return 10
-  end
-
-  def take_win(money)
-    @money += money
   end
 
   def show_cards

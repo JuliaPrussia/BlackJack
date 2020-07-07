@@ -45,6 +45,14 @@ class Interface
     puts "Право хода переходит к Дилеру"
   end
 
+  def dealer_pass
+    puts "Дилер пасует"
+  end
+
+  def dealer_take_card
+    puts "Дилер берет карту"
+  end
+
   def warning_about_cards
     puts"Взять новую карту возможно если у вас на руках только 2 карты!"
   end
