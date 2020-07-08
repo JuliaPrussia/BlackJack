@@ -1,4 +1,5 @@
 class Bank
+  attr_reader :player_money
 
   INITIAL_MONEY = 100
 
@@ -14,7 +15,7 @@ class Bank
   def give_win
     money = @money
     @money = 0
-    return money
+    money
   end
 
   def make_bet

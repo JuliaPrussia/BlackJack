@@ -1,7 +1,6 @@
 class Dealer < Player
-  def initialize(_name)
-    super('Dealer') ##при такои варианте вылетает ошибка о неверном кол-ве аргмуентов
-    @interface = Interface.new
+  def initialize(*args)
+    super('Dealer')
   end
 
   def dealer_game(deck)
@@ -16,7 +15,7 @@ class Dealer < Player
   end
 
   def closed_cards
-    @hand.player_cards.each { |card| puts"*" }
+    @hand.player_cards.each { |card| @interface.show_closed_card }
   end
 
 end

@@ -2,6 +2,14 @@ class Interface
   def initialize
   end
 
+  def show_card(card)
+    puts"#{card.value}#{card.suit}"
+  end
+
+  def show_closed_card
+    puts"*"
+  end
+
   def ask_player_name
     puts "Введите желаемое имя:"
   end
@@ -71,6 +79,11 @@ class Interface
 
   def winner(name)
     puts "Победитель: #{name}"
+  end
+
+  def input_error(e)
+    puts"#{e.message}"
+    puts "попробуйте еще раз"
   end
 
 end

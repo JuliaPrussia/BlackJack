@@ -1,7 +1,8 @@
 class Player
   attr_reader :name,
               :money,
-              :hand
+              :hand,
+              :bank
 
   NAME_TEMPLATE = /^[A-zА-я]{3,16}$/
 
@@ -9,11 +10,12 @@ class Player
     @name = name
     @hand = Hand.new
     @bank = Bank.new
+    @interface = Interface.new
     validate!
   end
 
   def show_cards
-    @hand.player_cards.each { |card| puts"#{card.value}#{card.suit}" }
+    @hand.player_cards.each { |card| @interface.show_card(card) }
   end
 
   protected

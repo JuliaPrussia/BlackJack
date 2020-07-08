@@ -11,10 +11,9 @@ class Game
     player_init
     game_session
 
-  rescue StandardError => e
-    puts"#{e.message}"
-    puts "попробуйте еще раз"
-  retry
+  # rescue StandardError => e
+  #   @interface.input_error(e)
+  # retry
   end
 
   private
@@ -47,8 +46,8 @@ class Game
     @dealer.hand.add_card(@deck.take_card)
 
     @interface.ask_take_bet
-    @bank.take_bet(@player.make_bet)
-    @bank.take_bet(@dealer.make_bet)
+    @bank.take_bet(@player.bank.make_bet)
+    @bank.take_bet(@dealer.bank.make_bet)
 
     @interface.show_your_card
     @player.show_cards
@@ -121,7 +120,7 @@ class Game
       @interface.balance_dealer(@dealer.bank.player_money)
     else
       @interface.winner(result.name)
-      result.take_win(@bank.give_win)
+      result.bank.take_win(@bank.give_win)
       @interface.balance(@player.bank.player_money)
       @interface.balance_dealer(@dealer.bank.player_money)
     end
