@@ -9,7 +9,6 @@ class Hand
 
   def reset_game_info
     @player_cards = []
-    @score = 0
   end
 
   def add_card(card)
@@ -29,6 +28,10 @@ class Hand
         @score +=11 if @score + 11 <= 21
       end
     end
+
+    score = @score
+    @score = 0
+    score
   end
 
 end

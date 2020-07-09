@@ -14,10 +14,6 @@ class Player
     validate!
   end
 
-  def show_cards
-    @hand.player_cards.each { |card| @interface.show_card(card) }
-  end
-
   protected
 
   def validate!

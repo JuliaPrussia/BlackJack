@@ -34,6 +34,14 @@ class Game
     end
   end
 
+  def show_cards(player)
+    player.hand.player_cards.each { |card| @interface.show_card(card) }
+  end
+
+  def closed_cards(player)
+    player.hand.player_cards.each { |card| @interface.show_closed_card }
+  end
+
   def start_game
     @deck = Deck.new
 
@@ -50,23 +58,21 @@ class Game
     @bank.take_bet(@dealer.bank.make_bet)
 
     @interface.show_your_card
-    @player.show_cards
+    show_cards(@player)
     @interface.show_dealer_card
-    @dealer.closed_cards
+    closed_cards(@dealer)
 
-    @player.hand.scoring
-    @dealer.hand.scoring
-    @interface.show_your_score(@player.hand.score)
+    @interface.show_your_score(@player.hand.scoring)
   end
 
   def game_logic
     game_process
     @interface.show_your_card
-    @player.show_cards
+    show_cards(@player)
     @interface.show_dealer_card
-    @dealer.show_cards
-    @interface.show_your_score(@player.hand.score)
-    @interface.show_dealer_score(@dealer.hand.score)
+    show_cards(@dealer)
+    @interface.show_your_score(@player.hand.scoring)
+    @interface.show_dealer_score(@dealer.hand.scoring)
     show_result
   end
 
@@ -87,26 +93,31 @@ class Game
 
   def dealer_move
     @interface.dealer_move
-    @dealer.dealer_game(@deck)
+    move = @dealer.dealer_game(@deck)
+    if move == "pass"
+      @interface.dealer_pass
+    else
+      @interface.dealer_take_card
+      closed_cards(@dealer)
+    end
   end
 
   def player_take_card
     if @player.hand.player_cards.length < 3
       @player.hand.add_card(@deck.take_card)
       @interface.show_your_card
-      @player.show_cards
-      @player.hand.scoring
-      @interface.show_your_score(@player.hand.score)
+      show_cards(@player)
+      @interface.show_your_score(@player.hand.scoring)
       dealer_move
     else
       @interface.warning_about_cards
     end
   end
 
-  def result(player1, player2)
-    return player1 if player2.hand.score > 21 && player1.hand.score <= 21 || player1.hand.score > player2.hand.score && player1.hand.score <= 21
-    return player2 if player1.hand.score > 21 && player2.hand.score <= 21 || player2.hand.score > player1.hand.score && player2.hand.score <= 21
-    return "Ничья" if player1.hand.score == player2.hand.score || player1.hand.score > 21 && player2.hand.score > 21
+  def result(player1, dealer)
+    return player1 if dealer.hand.scoring > 21 && player1.hand.scoring <= 21 || player1.hand.scoring > dealer.hand.scoring && player1.hand.scoring <= 21
+    return dealer if player1.hand.scoring > 21 || dealer.hand.scoring > player1.hand.scoring && player1.hand.scoring <= 21
+    return "Ничья" if player1.hand.scoring == dealer.hand.scoring 
   end
 
   def show_result
