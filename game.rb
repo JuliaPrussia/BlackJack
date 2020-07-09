@@ -62,7 +62,9 @@ class Game
     @interface.show_dealer_card
     closed_cards(@dealer)
 
-    @interface.show_your_score(@player.hand.scoring)
+    @player.hand.scoring
+    @dealer.hand.scoring
+    @interface.show_your_score(@player.hand.score)
   end
 
   def game_logic
@@ -71,8 +73,10 @@ class Game
     show_cards(@player)
     @interface.show_dealer_card
     show_cards(@dealer)
-    @interface.show_your_score(@player.hand.scoring)
-    @interface.show_dealer_score(@dealer.hand.scoring)
+    @player.hand.scoring
+    @dealer.hand.scoring
+    @interface.show_your_score(@player.hand.score)
+    @interface.show_dealer_score(@dealer.hand.score)
     show_result
   end
 
@@ -107,7 +111,8 @@ class Game
       @player.hand.add_card(@deck.take_card)
       @interface.show_your_card
       show_cards(@player)
-      @interface.show_your_score(@player.hand.scoring)
+      @player.hand.scoring
+      @interface.show_your_score(@player.hand.score)
       dealer_move
     else
       @interface.warning_about_cards
@@ -115,9 +120,9 @@ class Game
   end
 
   def result(player1, dealer)
-    return player1 if dealer.hand.scoring > 21 && player1.hand.scoring <= 21 || player1.hand.scoring > dealer.hand.scoring && player1.hand.scoring <= 21
-    return dealer if player1.hand.scoring > 21 || dealer.hand.scoring > player1.hand.scoring && player1.hand.scoring <= 21
-    return "Ничья" if player1.hand.scoring == dealer.hand.scoring 
+    return player1 if dealer.hand.score > 21 && player1.hand.score <= 21 || player1.hand.score > dealer.hand.score && player1.hand.score <= 21
+    return dealer if player1.hand.score > 21 || dealer.hand.score > player1.hand.score && player1.hand.score <= 21
+    return "Ничья" if player1.hand.score == dealer.hand.score
   end
 
   def show_result

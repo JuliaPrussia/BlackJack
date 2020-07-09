@@ -9,6 +9,7 @@ class Hand
 
   def reset_game_info
     @player_cards = []
+    score
   end
 
   def add_card(card)
@@ -16,6 +17,7 @@ class Hand
   end
 
   def scoring
+    @score = 0
     @player_cards.each do |card|
       if card.score != 'A'
         @score += card.score
@@ -28,10 +30,6 @@ class Hand
         @score +=11 if @score + 11 <= 21
       end
     end
-
-    score = @score
-    @score = 0
-    score
   end
 
 end
