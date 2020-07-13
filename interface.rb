@@ -57,6 +57,10 @@ class Interface
     puts "Дилер пасует"
   end
 
+  def dealer_open_card
+    puts "Дилер открывает карты"
+  end
+
   def dealer_take_card
     puts "Дилер берет карту"
   end

@@ -18,6 +18,9 @@ class Hand
 
   def scoring
     @score = 0
+    @count_a = []
+    @player_cards.each { |a| @count_a.push(a) if a.score == 'A'}
+
     @player_cards.each do |card|
       if card.score != 'A'
         @score += card.score
@@ -26,8 +29,12 @@ class Hand
 
     @player_cards.each do |card|
       if card.score == 'A'
-        @score +=1 if @score + 11 > 21
-        @score +=11 if @score + 11 <= 21
+        if @count_a.length >= 2
+          @score +=1
+        else
+          @score +=1 if @score + 11 > 21
+          @score +=11 if @score + 11 <= 21
+        end
       end
     end
   end

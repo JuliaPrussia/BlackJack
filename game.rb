@@ -86,20 +86,21 @@ class Game
       select = @interface.answer_some_question.to_i
       case select
       when 1
-        dealer_move
+        dealer_move{@interface.dealer_pass}
       when 2
         player_take_card
+        break
       when 3
         break
       end
     end
   end
 
-  def dealer_move
+  def dealer_move(&d_pass)
     @interface.dealer_move
     move = @dealer.dealer_game(@deck)
     if move == "pass"
-      @interface.dealer_pass
+      yield
     else
       @interface.dealer_take_card
       closed_cards(@dealer)
@@ -113,7 +114,7 @@ class Game
       show_cards(@player)
       @player.hand.scoring
       @interface.show_your_score(@player.hand.score)
-      dealer_move
+      dealer_move{@interface.dealer_open_card}
     else
       @interface.warning_about_cards
     end
